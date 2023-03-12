@@ -27,11 +27,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="number" min="0" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="phone-decrease" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="phone-number" type="number" min="0" class="form-control text-center" value="1">
+                           <button id="phone-increase" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$<span id="phone-total-price">1219</span> </h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -45,12 +45,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="number" min="0" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="case-decrease" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="case-number" type="number" min="0" class="form-control text-center" value="1">
+                           <button id="case-increase" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$<span id="case-total-price">59</span> </h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -66,9 +66,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="sub-total-price">1,278</span> </h5>
+                        <h5>$<span id="tax">127.8</span></h5>
+                        <h5>$<span id="total-price">1405.8</span></h5>
                      </div>
                   </div>
                </div>
@@ -79,6 +79,74 @@
          </div>
       </div>
    </section>
+   <script>
+      function numberChanger(caseOrPhone, isIncrease) {
+         const numberText = document.getElementById(caseOrPhone + '-number');
+         let number = parseInt(numberText.value);
+         console.log(number);
+         const price = document.getElementById(caseOrPhone + '-total-price');
+         let priceDollar = parseInt(price.innerText);
+         if (isIncrease == true) {
+            number = number + 1;
+            if (caseOrPhone == 'case') {
+               priceDollar = 59 * number;
+            }
+            else {
+               priceDollar = 1219 * number;
+            }
+            price.innerText = priceDollar;
+         }
+         else if (number >= 1) {
+            number = number - 1;
+            if (caseOrPhone == 'case') {
+               priceDollar = 59 * number;
+            }
+            else {
+               priceDollar = 1219 * number;
+            }
+            price.innerText = priceDollar;
+         }
+         numberText.value = number;
+
+         changeTotalAndSubTotal();
+      }
+
+      function changeTotalAndSubTotal(casePrice, phonePrice) {
+         const subtotalPrice = document.getElementById('sub-total-price');
+         let subtotalPriceNumber = parseFloat(subtotalPrice.innerText);
+
+         const tax = document.getElementById('tax');
+         let taxNumber = parseFloat(tax.innerText);
+
+         const totalPrice = document.getElementById('total-price');
+         let totalPriceNumber = parseFloat(totalPrice.innerText);
+
+         subtotalPriceNumber = parseInt(document.getElementById('case-total-price').innerText) + parseInt(document.getElementById('phone-total-price').innerText);
+         subtotalPrice.innerText = subtotalPriceNumber;
+
+
+         taxNumber = subtotalPriceNumber / 10;
+         totalPriceNumber = subtotalPriceNumber + taxNumber;
+
+         tax.innerText = taxNumber;
+         totalPrice.innerText = totalPriceNumber;
+      }
+
+      document.getElementById('case-increase').addEventListener('click', function () {
+         numberChanger('case', true);
+      })
+      document.getElementById('case-decrease').addEventListener('click', function () {
+         numberChanger('case', false);
+      })
+      document.getElementById('phone-increase').addEventListener('click', function () {
+         numberChanger('phone', true);
+      })
+      document.getElementById('phone-decrease').addEventListener('click', function () {
+         numberChanger('phone', false);
+      })
+   </script>
+   <script src="js/index.js"></script>
+
 </body>
 
 </html>
